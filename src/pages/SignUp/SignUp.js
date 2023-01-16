@@ -1,13 +1,33 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthProvider';
 
 const SignUp = () => {
     const {register,handleSubmit, formState:{errors}} = useForm();
+    const {createUser, updateUser} = useContext(AuthContext)
+    const [signUpError, setSignUpError] = useState('')
 
     const handleSignUp = data =>{
         console.log(data);
-        console.log(errors);
+        setSignUpError('');
+        createUser(data.email, data.password)
+        .then(result =>{
+            const user = result.user;
+            console.log(user);
+            toast('User Created Successfully')
+            const userInfo = {
+                displayName: data.name
+            }
+            updateUser(userInfo)
+            .then(() =>{})
+            .catch(error => console.log(error))
+        })
+        .catch(error => {
+            console.log(error)
+            setSignUpError(error.message)
+        });
     }
     return (
         <div className='h-[800px] flex justify-center items-center'>
@@ -32,11 +52,16 @@ const SignUp = () => {
                         <label className="label"><span className="label-text">Password</span></label>
                         <input type="password" {...register("password",
                         {required: 'password is required*',
-                         minLength: {value:6, message:'password must be 6 character or more'}}
+                         minLength: {value:6, message:'password must be 6 character or more*'},
+                         pattern: {value:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/, message:'at least one uppercase,one lowercase and one number*'}
+                        }
                         )} className="input input-bordered w-full max-w-xs" />
                         {errors.password && <p className='text-red-500'>{errors.password.message}</p>}
                     </div>
-                    <input className='btn btn-accent w-full' value="Sign Up" type="submit" />
+                    <input className='btn btn-accent w-full mt-4' value="Sign Up" type="submit" />
+                    {
+                        signUpError && <p className='text-red-500'>{signUpError}</p>
+                    }
                 </form>
                 <p>Already have an account? <Link className='text-secondary' to='/login'>Please Login</Link></p>
                 <div className="divider">OR</div>
