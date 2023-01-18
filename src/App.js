@@ -8,14 +8,14 @@ function App() {
     <div className="max-w-[1440px] mx-auto">
       <RouterProvider router={router}></RouterProvider>
       <Toaster
-        toastOptions={{
-          className: '',
-          style: {
-            border: '1px solid #0FCFEC',
-            padding: '16px',
-            color: '#713200',
-          },
-        }}
+        // toastOptions={{
+        //   className: '',
+        //   style: {
+        //     border: '1px solid #0FCFEC',
+        //     padding: '16px',
+        //     color: '#713200',
+        //   },
+        // }}
       ></Toaster>
     </div>
   );
