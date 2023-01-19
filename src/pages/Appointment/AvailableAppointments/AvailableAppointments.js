@@ -8,11 +8,12 @@ import { async } from '@firebase/util';
 const AvailableAppointment = ({ selectedDate }) => {
     // const [appointmentoptions, setAppointmentoptions] = useState([]);
     const [treatment, setTreatment] = useState(null);
+    const date = format(selectedDate, 'PP');
 
     const { data: appointmentoptions = [] } = useQuery({
-        queryKey: ['appointmentOptions'],
+        queryKey: ['appointmentOptions', date],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/appointmentOptions');
+            const res = await fetch(`http://localhost:5000/appointmentOptions?date=${date}`);
             const data = await res.json()
             return data;
         }
