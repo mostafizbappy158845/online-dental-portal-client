@@ -17,7 +17,7 @@ const BookingModal = ({ treatment, setTreatment, selectedDate, refetch }) => {
         const phone = form.phone.value;
 
         const booking = {
-            appointmentdate: date,
+            appointmentDate: date,//capital D-date;
             treatment: treatmentName,
             patient: name,
             slot,
@@ -44,6 +44,9 @@ const BookingModal = ({ treatment, setTreatment, selectedDate, refetch }) => {
                     setTreatment(null);
                     toast.success('Booking Confirmed');
                     refetch();
+                }
+                else{
+                    toast.error(data.message);
                 }
             })
 
