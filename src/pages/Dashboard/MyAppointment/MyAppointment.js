@@ -8,9 +8,9 @@ const MyAppointment = () => {
 
     const url = `http://localhost:5000/bookings?email=${user?.email}`;
 
-    const {data: bookings = []} = useQuery({
+    const { data: bookings = [] } = useQuery({
         queryKey: ['bookings', user?.email],
-        queryFn: async () =>{
+        queryFn: async () => {
             const res = await fetch(url);
             const data = await res.json();
             return data;
@@ -33,12 +33,12 @@ const MyAppointment = () => {
                     </thead>
                     <tbody>
                         {
-                            bookings.map((booking,i) =><tr>
+                            bookings.map((booking, i) => <tr>
                                 <th>{i}</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>Cy Ganderton</td>
+                                <td>Quality Control Specialist</td>
+                                <td>Blue</td>
+                                <td>Blue</td>
                             </tr>)
                         }
                     </tbody>
