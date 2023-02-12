@@ -3,13 +3,20 @@ import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
+import usetoken from '../../hooks/useToken';
 
 const SignUp = () => {
     const {register,handleSubmit, formState:{errors}} = useForm();
-    const {createUser, updateUser} = useContext(AuthContext)
-    const [signUpError, setSignUpError] = useState('')
+    const {createUser, updateUser} = useContext(AuthContext);
+    const [signUpError, setSignUpError] = useState('');
+    const [createdUserEmail, setCreatedUserEmail] = useState('')
+    const [token] = usetoken(createdUserEmail);
 
     const navigate = useNavigate();
+
+    if(token){
+        navigate('/');
+    }
     const handleSignUp = data =>{
         setSignUpError('');
         createUser(data.email, data.password)
@@ -44,20 +51,11 @@ const SignUp = () => {
         })
         .then(res => res.json())
         .then(data =>{
-            getUserToken(email);
+            setCreatedUserEmail(email);
         })
     }
 
-    const getUserToken = email =>{
-        fetch(`http://localhost:5000/jwt?email=${email}`)
-        .then(res=> res.json())
-        .then(data=>{
-            if(data.accessToken){
-                localStorage.setItem('accessToken',data.accessToken);
-                navigate('/');
-            }
-        })
-    }
+    
 
     return (
         <div className='h-[800px] flex justify-center items-center'>
